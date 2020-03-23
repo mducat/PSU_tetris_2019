@@ -5,7 +5,9 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c
+SRC	=	src/main.c	\
+		src/args.c	\
+		src/debug.c
 
 OBJ	=	$(SRC:.c=.o)
 
