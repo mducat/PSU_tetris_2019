@@ -33,11 +33,12 @@
     "  -w --without-next     Hide next tetrimino (def: false)\n"        \
     "  -D --debug            Debug mode (def: false)\n"
 
-typedef struct piece {
-    char error;
-    char color;
+typedef struct tetriminos_s {
+    int error;
+    int color;
     int width;
-    int size;
+    int height;
+    char *name;
     char **blocks;
 } tetrimino_t;
 
@@ -84,5 +85,24 @@ static struct option tetris_long[] =
 
 conf_t *parse_arguments(int ac, char **av);
 void print_conf(conf_t *conf);
+void print_tetriminos(tetrimino_t **tetris);
+
+
+// Tetriminos handling
+void set_tetri_int_values(tetrimino_t *tetri, char *content);
+int tetri_check_block(tetrimino_t *tetri, char **content);
+int set_tetri_content(tetrimino_t *tetri, char **content);
+tetrimino_t *get_tetrimino_from_file(char *file);
+void sort_tetriminos(tetrimino_t **tetriminos);
+int count_int(char *string);
+int is_end_string(char *string);
+void remove_end_space(char *content);
+char *my_str_caps(char *str);
+char *get_path(char *file);
+char **get_filelist(char *path);
+char **get_tetriminos_file(void);
+char **read_file_c(char *path);
+void pop_array(char ***array, int index);
+void push_array(char ***array, char *string);
 
 #endif

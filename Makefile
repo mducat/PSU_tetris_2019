@@ -5,9 +5,13 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c	\
-		src/args.c	\
-		src/debug.c
+SRC	=	src/main.c			\
+		src/args.c			\
+		src/debug.c			\
+		src/tetriminos.c	\
+		src/string.c		\
+		src/file.c			\
+		src/array.c			\
 
 OBJ	=	$(SRC:.c=.o)
 
