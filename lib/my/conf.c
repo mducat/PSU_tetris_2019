@@ -17,75 +17,77 @@ int is_signed(char type)
     return (0);
 }
 
-void handle_number(char type, int conf, int nb)
+void handle_number(char type, pf_conf_t *conf, int nb)
 {
     if (!is_signed(type))
         return;
     if (nb < 0)
-        return (pf_putchar('-'));
-    if (conf & F_PLS)
-        pf_putchar('+');
-    else if (conf & F_SPC)
-        pf_putchar(' ');
+        return (pf_putchar('-', conf));
+    if (conf->flags[1])
+        pf_putchar('+', conf);
+    else if (conf->flags[2])
+        pf_putchar(' ', conf);
 }
 
-int handle_alt(char type, int conf, int nb, int printing)
+int handle_alt(char type, pf_conf_t *conf, int nb, int printing)
 {
-    if (!(conf & F_HSH))
+    if (!conf->flags[4])
         return (0);
     switch (type){
     case 'o':
         if (printing)
-            pf_putchar('0');
+            pf_putchar('0', conf);
         return (1);
     case 'x':
         if (printing)
-            pf_putstr("0x");
+            pf_putstr("0x", conf);
         return (2);
     case 'X':
         if (printing)
-            pf_putstr("0X");
+            pf_putstr("0X", conf);
         return (2);
     }
     return (0);
 }
 
-void handle_conf(char type, int conf, int size, int nb)
+void handle_conf(char type, pf_conf_t *conf, int size, int nb)
 {
-    int offset = ((conf & F_PLS) | (conf & F_SPC)) & nb > 0 | nb < 0;
-    int padding = (conf >> 24) - size - offset;
+    int offset = (conf->flags[1] | conf->flags[2]) & nb > 0 | nb < 0;
+    int padding = conf->width - size - offset;
     int zeros = 0;
 
     if (type == '%')
         return;
     padding -= handle_alt(type, conf, nb, 1);
-    if ((conf >> 16) & 0xFF > 0 && ((conf & F_MIN) | (conf & F_NUL))
+    if (conf->precision > 0 && (conf->flags[0] | conf->flags[3])
         && is_numtype(type))
-        padding -= (zeros = ((conf >> 16) & 0xFF) - size);
-    else if (conf >> 24 > 0 && (conf & F_NUL) && is_numtype(type))
-        padding -= (zeros = (conf >> 24) - size);
-    if (!(conf & F_MIN))
+        padding -= (zeros = conf->precision - size);
+    else if (conf->width > 0 && conf->flags[3] && is_numtype(type))
+        padding -= (zeros = conf->width - size);
+    if (!conf->flags[0])
         for (int i = 0; i < padding; i++)
-            pf_putchar(' ');
+            pf_putchar(' ', conf);
     handle_number(type, conf, nb);
     for (int i = 0; i < zeros; i++)
-        pf_putchar('0');
+        pf_putchar('0', conf);
 }
 
-void post_conf(char type, int conf, int size, int nb)
+void post_conf(char type, pf_conf_t *conf, int size, int nb)
 {
     char print = ' ';
-    int offset = ((conf & F_PLS) | (conf & F_SPC)) & nb > 0 | nb < 0;
-    int padding = (conf >> 24) - size - offset;
+    int offset = (conf->flags[1] | conf->flags[2]) & nb > 0 | nb < 0;
+    int padding = conf->width - size - offset;
 
-    if (!(conf & F_MIN))
+    if (!conf->flags[0])
         return;
     padding -= handle_alt(type, conf, nb, 0);
-    if ((conf >> 16) & 0xFF > 0 && ((conf & F_MIN) | (conf & F_NUL))
+    if (conf->precision > 0 && (conf->flags[0] | conf->flags[3])
         && is_numtype(type))
-        padding -= ((conf >> 16) & 0xFF) - size;
-    else if (conf >> 24 > 0 && (conf & F_NUL) && is_numtype(type))
-        padding -= conf << 24 - size;
-    for (int i = 0; i < padding; i++)
-        pf_putchar(print);
+        padding -= conf->precision - size;
+    else if (conf->width > 0 && conf->flags[3] && is_numtype(type))
+        padding -= conf->width - size;
+    if (padding > 0){
+        for (int i = 0; i < padding; i++)
+            pf_putchar(print, conf);
+    }
 }

@@ -44,7 +44,8 @@ void remove_end_space(char *content)
 {
     int i = 0;
 
-    for (i = my_strlen(content) - 1; i > 0 && (content[i] == '\n' || content[i] == ' '); i--) {
+    for (i = my_strlen(content) - 1; i > 0 &&
+        (content[i] == '\n' || content[i] == ' '); i--) {
         content[i] = 0;
     }
 }

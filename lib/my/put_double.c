@@ -40,7 +40,7 @@ double float_mod(double a, double n)
     return (ABS(a));
 }
 
-void put_double(double a, double precision, int conf)
+void put_double(double a, double precision, pf_conf_t *conf)
 {
     double float_p = float_mod(a, 1) * 10;
     double int_p = (a - float_mod(a, 1));
@@ -48,29 +48,28 @@ void put_double(double a, double precision, int conf)
     int round;
 
     while (mag > 0.1){
-        pf_putchar(float_mod(int_p / mag, 10) + 0x30);
+        pf_putchar(float_mod(int_p / mag, 10) + 0x30, conf);
         mag /= 10;
     }
     if (precision <= 0)
         return;
-    pf_putchar('.');
+    pf_putchar('.', conf);
     while (precision-- > 1){
-        pf_putchar(float_mod(float_p, 10) + 0x30);
+        pf_putchar(float_mod(float_p, 10) + 0x30, conf);
         float_p *= 10;
     }
     round = (int) float_mod(float_p, 10);
     if (float_mod(float_p * 10, 10) > 4)
         round += (round < 9 ? 1 : -10);
-    pf_putchar(round + 0x30);
+    pf_putchar(round + 0x30, conf);
 }
 
-void print_double(va_list *ap, int conf)
+void print_double(va_list *ap, pf_conf_t *conf)
 {
     double res = va_arg(*ap, double);
     int precision = 6;
-    char pr = (conf >> 16) & 0xFF;
 
-    if (pr != -1)
-        precision = pr;
+    if (conf->precision != -1)
+        precision = conf->precision;
     put_double(res, precision, conf);
 }

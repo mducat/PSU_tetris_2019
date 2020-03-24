@@ -23,7 +23,7 @@ int get_tetriminos(tetrimino_t ***list)
     int tetri_c = 0;
 
     if (files == NULL)
-        return (0);
+        return (1);
     for (; files[tetri_c]; tetri_c++);
     tetriminos = malloc(sizeof(tetrimino_t *) * (tetri_c + 1));
     for (int i = 0; files[i]; i++)
@@ -36,20 +36,20 @@ int get_tetriminos(tetrimino_t ***list)
 
 int main(int ac, char **av)
 {
-    int status = 0;
     conf_t *conf = parse_arguments(ac, av);
-    tetrimino_t **tetriminos;
 
     if (!conf)
         return (84);
-    status = get_tetriminos(&tetriminos);
-    if (status)
-        return (84);
-    if (conf->debug) {
-        print_conf(conf);
-        print_tetriminos(tetriminos);
+    if (conf->help){
+        my_printf(USAGE, av[0]);
+        free(conf);
+        return (0);
     }
-
+    if (get_tetriminos(&(conf->tetriminos)))
+        return (84);
+    if (conf->debug)
+        print_conf(conf);
+    start_game(conf);
     free(conf);
     return (0);
 }

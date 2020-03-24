@@ -6,7 +6,6 @@
 */
 
 #include <stdlib.h>
-#include <stdarg.h>
 
 #include "my.h"
 
@@ -25,8 +24,6 @@ int get_width_index(char const *format, int i)
 {
     i = get_flag_index(format, i);
     for (; format[i] != 0 && is_num(format[i]); i++);
-    if (format[i] == '*')
-        i++;
     return (i);
 }
 
@@ -36,8 +33,6 @@ int get_precision_index(char const *format, int i)
     if (format[i] == '.')
         i++;
     for (; format[i] != 0 && is_num(format[i]); i++);
-    if (format[i] == '*')
-        i++;
     return (i);
 }
 
@@ -55,12 +50,15 @@ int get_length_index(char const *format, int i)
     return (i);
 }
 
-int get_configuration(char const *format, int i, va_list va)
+void get_configuration(char const *format, int i, pf_conf_t *conf)
 {
-    int conf = get_flags(format, i);
+    int *flags = malloc(sizeof(int) * 5);
 
-    conf |= get_size(format, i) << 8;
-    conf |= get_precision(format, i, va) << 16;
-    conf |= get_width(format, i, va) << 24;
-    return (conf);
+    for (int i = 0; i < 5; i++)
+        flags[i] = 0;
+    get_flags(format, i, flags);
+    conf->flags = flags;
+    conf->width = get_width(format, i);
+    conf->precision = get_precision(format, i);
+    conf->size = get_size(format, i);
 }

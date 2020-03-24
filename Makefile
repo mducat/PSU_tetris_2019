@@ -5,19 +5,21 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c			\
-		src/args.c			\
-		src/debug.c			\
+SRC	=	src/main.c		\
+		src/args.c		\
+		src/debug.c		\
 		src/tetriminos.c	\
 		src/string.c		\
-		src/file.c			\
-		src/array.c			\
+		src/file.c		\
+		src/array.c		\
+		src/game.c		\
+		src/draw.c
 
 OBJ	=	$(SRC:.c=.o)
 
 NAME	=	tetris
 
-CFLAGS	=	-Iinclude -Llib -lmy
+CFLAGS	=	-Iinclude -Llib -lmy -lncurses
 
 all:
 	$(MAKE) -C lib/my --no-print-directory

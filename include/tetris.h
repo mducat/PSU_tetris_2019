@@ -45,13 +45,15 @@ typedef struct tetriminos_s {
 typedef struct conf {
     tetrimino_t **tetriminos;
     char debug;
-    char without_next;
-    char key_left;
-    char key_right;
-    char key_turn;
-    char key_drop;
-    char key_quit;
-    char key_pause;
+    char help;
+    char level_start;
+    int without_next;
+    int key_left;
+    int key_right;
+    int key_turn;
+    int key_drop;
+    int key_quit;
+    int key_pause;
     int width;
     int height;
 } conf_t;
@@ -67,7 +69,7 @@ typedef struct game {
     tetrimino_t *next;
 } game_t;
 
-static struct option tetris_long[] =
+static const struct option tetris_long[] =
 {
     {"help", no_argument, 0, 1},
     {"level", required_argument, 0, 'L'},
@@ -86,7 +88,8 @@ static struct option tetris_long[] =
 conf_t *parse_arguments(int ac, char **av);
 void print_conf(conf_t *conf);
 void print_tetriminos(tetrimino_t **tetris);
-
+void start_game(conf_t *conf);
+void display(game_t *game, conf_t *conf);
 
 // Tetriminos handling
 void set_tetri_int_values(tetrimino_t *tetri, char *content);

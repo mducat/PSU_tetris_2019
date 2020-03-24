@@ -42,73 +42,57 @@ char *read_file_desc(int);
 
 #include <stdarg.h>
 
-static int char_printed;
-
-// int struct :
-// [------][------][------][------]
-// |-+ 0#-||SIZE--||PREC--||WIDTH-|
-
-enum pf_flags {
-    F_MIN = 1 << 0,
-    F_PLS = 1 << 1,
-    F_SPC = 1 << 2,
-    F_NUL = 1 << 3,
-    F_HSH = 1 << 4
-};
-
-/*
-typedef struct conf{
+typedef struct pf_conf{
     int *flags;
     int width;
     int precision;
     int size;
+    int char_printed;
 } pf_conf_t;
-*/
 
 int my_printf(char const *, ...);
 
-void pf_putchar(char);
-void pf_putstr(char const *);
-void pf_put_nbr(long long int);
-void handle_conf(char, int, int, int);
-void post_conf(char, int, int, int);
+void pf_putchar(char, pf_conf_t *);
+void pf_putstr(char const *, pf_conf_t *);
+void pf_put_nbr(long long int, pf_conf_t *);
+void handle_conf(char, pf_conf_t *, int, int);
+void post_conf(char, pf_conf_t *, int, int);
 
-int get_configuration(char const *format, int i, va_list va);
+void get_configuration(char const *format, int i, pf_conf_t *conf);
 
-int get_flags(char const *format, int i);
-char get_size(char const *format, int i);
-char get_type(char const *format, int i);
-char get_width(char const *format, int i, va_list va);
-char get_precision(char const *format, int i, va_list va);
+void get_flags(char const *format, int i, int fl[]);
+int get_size(char const *format, int i);
+int get_type(char const *format, int i);
+int get_width(char const *format, int i);
+int get_precision(char const *format, int i);
 
 int get_flag_index(char const *format, int i);
 int get_width_index(char const *format, int i);
 int get_precision_index(char const *format, int i);
 int get_length_index(char const *format, int i);
 
-void my_putnbr_base(unsigned long long int nbr, char const *base, int disp_len);
-void my_put_unsigned_nbr(unsigned long long int nb);
+int is_numtype(char c);
+
+void my_putnbr_base(unsigned long long int nbr, char const *base, int disp_len,
+                    pf_conf_t *conf);
+void my_put_unsigned_nbr(unsigned long long int nb, pf_conf_t *conf);
 int get_nbr_length(long long int nbr, char *base, int is_signed);
-long long int get_number(va_list *, int, int);
+long long int get_number(va_list *, pf_conf_t *, int);
 
-void print_str(va_list *, int);
-void print_str_format(va_list *, int);
-void print_nbr(va_list *, int);
-void print_char(va_list *, int);
-void print_pointer(va_list *, int);
-void print_binary(va_list *, int);
-void print_hexa(va_list *, int);
-void print_unsigned(va_list *, int);
-void print_percent(va_list *, int);
-void print_double(va_list *, int);
-void print_memory(va_list *, int);
-void print_octal(va_list *, int);
-void print_hexa_maj(va_list *, int);
-
-static const void (*pr[])(va_list *, int) = {print_str, print_nbr,
-    print_nbr, print_char, print_str_format, print_binary, print_pointer,
-    print_hexa, print_unsigned, print_double, print_percent, print_memory,
-    print_octal, print_hexa_maj};
+void print_str(va_list *, pf_conf_t *);
+void print_str_format(va_list *, pf_conf_t *);
+void print_nbr(va_list *, pf_conf_t *);
+void print_char(va_list *, pf_conf_t *);
+void print_pointer(va_list *, pf_conf_t *);
+void print_binary(va_list *, pf_conf_t *);
+void print_hexa(va_list *, pf_conf_t *);
+void print_unsigned(va_list *, pf_conf_t *);
+void print_percent(va_list *, pf_conf_t *);
+void print_double(va_list *, pf_conf_t *);
+void print_errno(va_list *, pf_conf_t *);
+void print_memory(va_list *, pf_conf_t *);
+void print_octal(va_list *, pf_conf_t *);
+void print_hexa_maj(va_list *, pf_conf_t *);
 
 #define is_numtype(x) (x == '%' || x == 's' || x == 'S' || x == 'c' || x == 'p')
 

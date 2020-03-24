@@ -5,16 +5,16 @@
 ** Display the passed number to stdout
 */
 
-void my_putchar(char c);
+#include "my.h"
 
-int my_put_nbr(int nb)
+void pf_put_nbr(long long int nb, pf_conf_t *conf)
 {
     int magnitude = 1;
-    int nb_copy = nb;
+    long long int nb_copy = nb;
     if (nb < 0) {
-        my_putchar('-');
+        pf_putchar('-', conf);
         if (nb == -2147483648) {
-            my_putchar('2');
+            pf_putchar('2', conf);
             nb = -147483648;
         }
         nb *= -1;
@@ -25,7 +25,7 @@ int my_put_nbr(int nb)
         nb_copy /= 10;
     }
     while (magnitude > 0) {
-        my_putchar((nb / magnitude) % 10 + 48);
+        pf_putchar((nb / magnitude) % 10 + 48, conf);
         magnitude /= 10;
     }
 }
