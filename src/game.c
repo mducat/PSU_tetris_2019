@@ -20,7 +20,7 @@ char **init_map(conf_t *conf)
         return (0);
     map[conf->height] = 0;
     for (int i = 0; i < conf->height; i++){
-        map[i] = malloc(sizeof(char) * (conf->width * 2 + 1));
+        map[i] = malloc(sizeof(char) * (conf->width * 2 + 2));
         if (!map[i])
             return (0);
         for (int j = 0; j < conf->width * 2 + 1; j++)
@@ -82,6 +82,10 @@ void start_game(conf_t *conf)
     game_t *game = init_game(conf);
 
     initscr();
+    start_color();
+    for (int i = 0; conf->tetriminos[i] != 0; i++)
+        init_pair(conf->tetriminos[i]->color,
+            conf->tetriminos[i]->color, COLOR_BLACK);
     keypad(stdscr, TRUE);
     noecho();
     curs_set(0);

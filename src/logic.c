@@ -43,8 +43,20 @@ tetrimino_t *pick_piece(conf_t *conf)
     return (piece);
 }
 
+void step(game_t *game, conf_t *conf)
+{
+    game->current->cur_y += 1;
+    if (is_colliding(game, game->current, conf)){
+        game->current->cur_y -= 1;
+        merge_map(game, game->current);
+        init_piece(game, conf);
+    }
+}
+
 int act(game_t *game, conf_t *conf, int c)
 {
+    int old_x = game->current->cur_x;
+
     if (c < 0)
         return (-1);
     if (c == conf->key_right)
@@ -52,21 +64,15 @@ int act(game_t *game, conf_t *conf, int c)
     if (c == conf->key_left)
         game->current->cur_x -= 1;
     if (c == conf->key_drop)
-        mvprintw(0, 0, "Drop !");
+        step(game, conf);
     if (c == conf->key_quit)
         return (1);
     if (c == conf->key_turn)
         mvprintw(0, 0, "Turn !");
     if (c == conf->key_pause)
         mvprintw(0, 0, "Pause !");
-    if (game->current->cur_x < 0)
-        game->current->cur_x = 0;
-    if (game->current->cur_x > conf->width - 1 - game->current->piece->width)
-        game->current->cur_x = conf->width - 1 - game->current->piece->width;
+    if (game->current->cur_x < 0 || game->current->cur_x > conf->width - 1 -
+        game->current->piece->width || is_colliding(game, game->current, conf))
+        game->current->cur_x = old_x;
     return (0);
-}
-
-void step(game_t *game, conf_t *conf)
-{
-    game->current->cur_y += 1;
 }

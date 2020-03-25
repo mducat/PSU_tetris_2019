@@ -1,3 +1,4 @@
+
 ##
 ## EPITECH PROJECT, 2019
 ## tetris
@@ -15,7 +16,8 @@ SRC	=	src/main.c		\
 		src/game.c		\
 		src/draw.c		\
 		src/logic.c		\
-		src/blocks.c
+		src/blocks.c		\
+		src/map.c
 
 OBJ	=	$(SRC:.c=.o)
 
