@@ -34,6 +34,19 @@ int get_tetriminos(tetrimino_t ***list)
     return (0);
 }
 
+void check_tetriminos(conf_t *conf)
+{
+    for (int i = 0; conf->tetriminos[i] != 0; i++){
+        if (conf->tetriminos[i]->width >= conf->width
+            || conf->tetriminos[i]->height >= conf->height)
+            conf->tetriminos[i]->error =1;
+    }
+    for (int i = 0; conf->tetriminos[i] != 0; i++)
+        if (!conf->tetriminos[i]->error)
+            return;
+    exit(84);
+}
+
 int main(int ac, char **av)
 {
     conf_t *conf = parse_arguments(ac, av);
@@ -47,6 +60,7 @@ int main(int ac, char **av)
     }
     if (get_tetriminos(&(conf->tetriminos)))
         return (84);
+    check_tetriminos(conf);
     if (conf->debug)
         print_conf(conf);
     start_game(conf);

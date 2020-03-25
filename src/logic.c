@@ -10,7 +10,7 @@
 
 #include "tetris.h"
 
-void init_piece(game_t *game, conf_t *conf)
+int init_piece(game_t *game, conf_t *conf)
 {
     int size = 0;
     char **dup;
@@ -24,9 +24,12 @@ void init_piece(game_t *game, conf_t *conf)
     for (; conf->tetriminos[size] != 0; size++);
     game->current->piece = game->next;
     game->current->cur_y = 0;
-    game->current->cur_x = 0;
+    game->current->cur_x = (conf->width - game->next->width) / 2;
     game->current->blocks = array_dup(game->next->blocks);
     game->next = pick_piece(conf);
+    if (is_colliding(game, game->current, conf))
+        return (1);
+    return (0);
 }
 
 tetrimino_t *pick_piece(conf_t *conf)
@@ -45,6 +48,8 @@ tetrimino_t *pick_piece(conf_t *conf)
 
 void step(game_t *game, conf_t *conf)
 {
+    if (game->pause)
+        return;
     game->current->cur_y += 1;
     if (is_colliding(game, game->current, conf)){
         game->current->cur_y -= 1;
@@ -70,7 +75,7 @@ int act(game_t *game, conf_t *conf, int c)
     if (c == conf->key_turn)
         mvprintw(0, 0, "Turn !");
     if (c == conf->key_pause)
-        mvprintw(0, 0, "Pause !");
+        game->pause ^= 1;
     if (game->current->cur_x < 0 || game->current->cur_x > conf->width - 1 -
         game->current->piece->width || is_colliding(game, game->current, conf))
         game->current->cur_x = old_x;

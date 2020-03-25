@@ -66,6 +66,7 @@ typedef struct cur {
 } current_t;
 
 typedef struct game {
+    int pause;
     int score;
     int high_score;
     int lines;
@@ -99,10 +100,16 @@ void print_tetriminos(tetrimino_t **tetris);
 void start_game(conf_t *conf);
 void display(game_t *game, conf_t *conf);
 
+void parse_nb(conf_t *conf);
+int parse_key(char org);
+
 int act(game_t *game, conf_t *conf, int c);
 void step(game_t *game, conf_t *conf);
 
-void init_piece(game_t *game, conf_t *conf);
+int is_colliding(game_t *game, current_t *current, conf_t *conf);
+void merge_map(game_t *game, current_t *current);
+
+int init_piece(game_t *game, conf_t *conf);
 tetrimino_t *pick_piece(conf_t *conf);
 
 char **array_dup(char **array);

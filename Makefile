@@ -17,7 +17,8 @@ SRC	=	src/main.c		\
 		src/draw.c		\
 		src/logic.c		\
 		src/blocks.c		\
-		src/map.c
+		src/map.c		\
+		src/parse.c
 
 OBJ	=	$(SRC:.c=.o)
 

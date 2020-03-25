@@ -48,8 +48,8 @@ void draw_current(int x, int y, game_t *game)
         attron(A_BOLD);
         for (int j = 0; game->current->blocks[i][j] != 0; j++)
             mvprintw(y + game->current->cur_y + i + 1,
-                     x + (game->current->cur_x + j) * 2 + 1,
-                     "%c", game->current->blocks[i][j]);
+                x + (game->current->cur_x + j) * 2 + 1,
+                "%c", game->current->blocks[i][j]);
         attroff(COLOR_PAIR(game->current->piece->color));
         attroff(A_BOLD);
     }

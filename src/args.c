@@ -28,31 +28,13 @@ conf_t *init_conf(void)
     conf->key_quit = 'q';
     conf->key_pause = ' ';
     conf->level_start = 1;
-    conf->width = 10;
-    conf->height = 20;
+    conf->width = 11;
+    conf->height = 21;
     return (conf);
-}
-
-int parse_key(char org)
-{
-    if (!my_strcmp(optarg, "left arrow"))
-        return (KEY_LEFT);
-    if (!my_strcmp(optarg, "right arrow"))
-        return (KEY_RIGHT);
-    if (!my_strcmp(optarg, "up arrow"))
-        return (KEY_UP);
-    if (!my_strcmp(optarg, "down arrow"))
-        return (KEY_DOWN);
-    if (my_strlen(optarg) == 1)
-        return (optarg[0]);
-    exit(84);
-    return (org);
 }
 
 void handle_other(conf_t *conf, char c)
 {
-    int separator = 0;
-
     switch (c){
     case 'p': conf->key_pause = parse_key(conf->key_pause);
         break;
@@ -60,13 +42,7 @@ void handle_other(conf_t *conf, char c)
         break;
     case 1: conf->help = 1;
         break;
-    case 2: for (; optarg[separator] && optarg[separator] != ','; separator++);
-        if (optarg[separator] != ','){
-            exit(84);
-            return;
-        }
-        conf->height = my_getnbr(optarg);
-        conf->width = my_getnbr(optarg + separator + 1);
+    case 2: parse_nb(conf);
         break;
     }
 }

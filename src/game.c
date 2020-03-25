@@ -38,6 +38,7 @@ game_t *init_game(conf_t *conf)
         return (0);
     srand((int) ((long) conf & 0xFFFFFFFF));
     game->score = 0;
+    game->pause = 0;
     game->high_score = 0;
     game->lines = 0;
     game->level = conf->level_start;
