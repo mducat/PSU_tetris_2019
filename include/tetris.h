@@ -58,14 +58,22 @@ typedef struct conf {
     int height;
 } conf_t;
 
+typedef struct cur {
+    int cur_x;
+    int cur_y;
+    char **blocks;
+    tetrimino_t *piece;
+} current_t;
+
 typedef struct game {
     int score;
     int high_score;
     int lines;
     int level;
     char **map;
+    clock_t timeout;
     clock_t clock;
-    tetrimino_t *current;
+    current_t *current;
     tetrimino_t *next;
 } game_t;
 
@@ -90,6 +98,15 @@ void print_conf(conf_t *conf);
 void print_tetriminos(tetrimino_t **tetris);
 void start_game(conf_t *conf);
 void display(game_t *game, conf_t *conf);
+
+int act(game_t *game, conf_t *conf, int c);
+void step(game_t *game, conf_t *conf);
+
+void init_piece(game_t *game, conf_t *conf);
+tetrimino_t *pick_piece(conf_t *conf);
+
+char **array_dup(char **array);
+void free_array(char **array);
 
 // Tetriminos handling
 void set_tetri_int_values(tetrimino_t *tetri, char *content);

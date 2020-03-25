@@ -56,3 +56,10 @@ void push_array(char ***array, char *string)
     free(old_array);
     *array = new_array;
 }
+
+void free_array(char **array)
+{
+    for (int i = 0; array[i] != NULL; i++)
+        free(array[i]);
+    free(array);
+}

@@ -8,6 +8,7 @@
 #include <ncurses.h>
 
 #include "tetris.h"
+#include "my.h"
 
 void draw_border(int x, int y, int width, int height)
 {
@@ -31,8 +32,31 @@ void draw_map(int x, int y, char **map)
         mvprintw(y + i, x, map[i]);
 }
 
+void draw_current(int x, int y, game_t *game)
+{
+    for (int i = 0; game->current->blocks[i] != 0; i++){
+        my_printf("\033[1;%dm", 31 + game->current->piece->color);
+        mvprintw(y + game->current->cur_y + i + 1,
+            x + game->current->cur_x + 1,
+            game->current->blocks[i]);
+        refresh();
+    }
+}
+
 void display(game_t *game, conf_t *conf)
 {
-    draw_border(20, 10, conf->width, conf->height);
-    draw_map(20, 10, game->map);
+    int x = 20;
+    int y = 10;
+
+    draw_current(x, y, game);
+    my_printf("\033[0m");
+    refresh();
+    draw_border(x, y, conf->width, conf->height);
+    draw_map(x, y, game->map);
+    if (!conf->without_next){
+        draw_border(x + conf->width + 10, y, 8, 8);
+        for (int i = 0; game->next->blocks[i] != 0; i++)
+            mvprintw(1 + y + i, x + conf->width + 11,
+                game->next->blocks[i]);
+    }
 }

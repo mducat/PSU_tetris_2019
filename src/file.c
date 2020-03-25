@@ -54,7 +54,7 @@ char **get_tetriminos_file(void)
     char **filelist = get_filelist("tetriminos");
     int point = 0;
     int cmp = 0;
-    
+
     for (int i = 0; filelist[i]; i++) {
         point = 0;
         for (; filelist[i][point] && filelist[i][point] != '.'; point++);

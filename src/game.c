@@ -12,22 +12,6 @@
 
 #include "tetris.h"
 
-void act(game_t *game, conf_t *conf, int c)
-{
-    if (c == conf->key_right)
-        mvprintw(0, 0, "Right !");
-    if (c == conf->key_left)
-        mvprintw(0, 0, "Left !");
-    if (c == conf->key_drop)
-        mvprintw(0, 0, "Drop !");
-    if (c == conf->key_quit)
-        mvprintw(0, 0, "Quit !");
-    if (c == conf->key_turn)
-        mvprintw(0, 0, "Turn !");
-    if (c == conf->key_pause)
-        mvprintw(0, 0, "Pause !");
-}
-
 char **init_map(conf_t *conf)
 {
     char **map = malloc(sizeof(char *) * (conf->height + 1));
@@ -39,7 +23,7 @@ char **init_map(conf_t *conf)
         map[i] = malloc(sizeof(char) * (conf->width * 2 + 1));
         if (!map[i])
             return (0);
-        for (int j = 0; j < conf->width * 2 + 1; j ++)
+        for (int j = 0; j < conf->width * 2 + 1; j++)
             map[i][j] = 0;
     }
     return (map);
@@ -52,6 +36,7 @@ game_t *init_game(conf_t *conf)
 
     if (!game || !map)
         return (0);
+    srand((int) ((long) conf & 0xFFFFFFFF));
     game->score = 0;
     game->high_score = 0;
     game->lines = 0;
@@ -60,6 +45,9 @@ game_t *init_game(conf_t *conf)
     game->current = 0;
     game->next = 0;
     game->map = map;
+    game->next = pick_piece(conf);
+    game->current = 0;
+    init_piece(game, conf);
     return (game);
 }
 
@@ -71,21 +59,22 @@ void free_game(game_t *game)
     free(game);
 }
 
-void game_loop(conf_t *conf, game_t *game)
+int input(game_t *game, conf_t *conf)
 {
-    int c;
-    int buf;
+    int mem = 0;
 
-    while (1){
+    game->timeout = clock();
+    timeout(10);
+    while (clock() - game->timeout < 10000){
+        if ((mem = act(game, conf, getch())) == 1)
+            return (1);
+        if (mem < 0)
+            continue;
         clear();
-        while ((buf = getch()) > 0)
-            c = buf;
-        act(game, conf, c);
         display(game, conf);
-        c = -1;
         refresh();
-        usleep(1000000);
     }
+    return (0);
 }
 
 void start_game(conf_t *conf)
@@ -95,9 +84,15 @@ void start_game(conf_t *conf)
     initscr();
     keypad(stdscr, TRUE);
     noecho();
-    timeout(0);
     curs_set(0);
-    game_loop(conf, game);
+    while (1){
+        clear();
+        display(game, conf);
+        refresh();
+        if (input(game, conf))
+            break;
+        step(game, conf);
+    }
     free_game(game);
     endwin();
 }

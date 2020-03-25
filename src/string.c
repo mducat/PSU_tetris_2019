@@ -21,7 +21,7 @@ int count_int(char *string)
     int count = 0;
 
     for (int i = 0; string[i]; i++) {
-        if (i > 0 && string[i] == ' ' 
+        if (i > 0 && string[i] == ' '
             && (string[i - 1] >= '0' && string[i - 1] <= '9'))
             count++;
         else if ((string[i + 1] == '\n' || !string[i + 1])

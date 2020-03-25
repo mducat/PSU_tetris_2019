@@ -13,7 +13,9 @@ SRC	=	src/main.c		\
 		src/file.c		\
 		src/array.c		\
 		src/game.c		\
-		src/draw.c
+		src/draw.c		\
+		src/logic.c		\
+		src/blocks.c
 
 OBJ	=	$(SRC:.c=.o)
 

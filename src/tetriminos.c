@@ -21,11 +21,11 @@ void set_tetri_int_values(tetrimino_t *tetri, char *content)
     int index = 0;
 
     tetri->width = my_getnbr(content);
-    for (index = 0; content[index] != ' ' 
+    for (index = 0; content[index] != ' '
         || !(content[index + 1] >= '0'
         && content[index + 1] <= '9'); index++);
     tetri->height = my_getnbr(content + index + 1);
-    for (index += 1; content[index] != ' ' 
+    for (index += 1; content[index] != ' '
         && !(content[index + 1] >= '0'
         && content[index + 1] <= '9'); index++);
     tetri->color = my_getnbr(content + index + 1);
@@ -84,7 +84,6 @@ void sort_tetriminos(tetrimino_t **tetriminos)
     tetrimino_t *tmp = NULL;
     char *str1 = NULL;
     char *str2 = NULL;
-
     for (; tetriminos[count]; count++);
     if (count <= 1)
         return;
