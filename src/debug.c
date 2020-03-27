@@ -79,13 +79,13 @@ void print_tetriminos(tetrimino_t **tetris)
     for (; tetris[count]; count++);
     my_printf("Tetriminos : %d\n", count);
     for (int i = 0; tetris[i]; i++) {
-        my_printf("Tetriminos : Name %s", tetris[i]->name);
+        my_printf("Tetriminos :\tName %s", tetris[i]->name);
         if (tetris[i]->error == 1) {
-            my_printf(" : Error\n");
+            my_printf(" :\tError\n");
             continue;
         }
-        my_printf(" : Size %d*%d", tetris[i]->width, tetris[i]->height);
-        my_printf(" : Color %d :\n", tetris[i]->color);
+        my_printf(" :\tSize %d*%d", tetris[i]->width, tetris[i]->height);
+        my_printf(" :\tColor %d :\n", tetris[i]->color);
         print_array(tetris[i]->blocks);
     }
 }
