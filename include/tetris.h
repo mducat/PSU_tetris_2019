@@ -14,24 +14,24 @@
 #define USAGE ""                                                        \
     "Usage: %s [options]\n"                                             \
     "Options:\n"                                                        \
-    "  --help                Display this help\n"                       \
-    "  -L --level={num}      Start Tetris at level num (def: 1)\n"      \
-    "  -l --key-right={K}    Move the tetrimino LEFT using the K key"   \
+    " --help\t\t\tDisplay this help\n"                       \
+    " -L --level={num}\tStart Tetris at level num (def: 1)\n"      \
+    " -l --key-right={K}\tMove the tetrimino LEFT using the K key"   \
     " (def: left arrow)\n"                                              \
-    "  -r --key-right={K}    Move the tetrimino RIGHT using the K key"  \
+    " -r --key-right={K}\tMove the tetrimino RIGHT using the K key"  \
     " (def: right arrow)\n"                                             \
-    "  -t --key-turn={K}     TURN the tetrimino clockwise 90d using"    \
+    " -t --key-turn={K}\tTURN the tetrimino clockwise 90d using"    \
     " the K key (def: top arrow)\n"                                     \
-    "  -d --key-drop={K}     DROP the tetrimino using the K key (def: " \
+    " -d --key-drop={K}\tDROP the tetrimino using the K key (def: " \
     "down arrow)\n"                                                     \
-    "  -q --key-quit={K}     QUIT the game using the K key (def: "      \
+    " -q --key-quit={K}\tQUIT the game using the K key (def: "      \
     "'q' key)\n"                                                        \
-    "  -p --key-pause={K}    PAUSE/RESTART the game using the K key"    \
+    " -p --key-pause={K}\tPAUSE/RESTART the game using the K key"    \
     " (def: space bar)\n"                                               \
-    "  --map-size={row, col} Set the numbers of rows and columns of"    \
+    " --map-size={row, col}\tSet the numbers of rows and columns of"    \
     " the map (def: 20, 10)\n"                                          \
-    "  -w --without-next     Hide next tetrimino (def: false)\n"        \
-    "  -D --debug            Debug mode (def: false)\n"
+    " -w --without-next\tHide next tetrimino (def: false)\n"        \
+    " -D --debug\t\tDebug mode (def: false)\n"
 
 // clocks_per_seconds
 #define CPS (10000)

@@ -21,6 +21,8 @@ int parse_key(char org)
         return (KEY_UP);
     if (!my_strcmp(optarg, "down arrow"))
         return (KEY_DOWN);
+    if (!my_strcmp(optarg, "space"))
+        return (' ');
     if (my_strlen(optarg) == 1)
         return (optarg[0]);
     exit(84);
