@@ -6,8 +6,10 @@
 */
 
 #include <stdlib.h>
+#include <ncurses.h>
 
 #include "my.h"
+#include "tetris.h"
 
 char **array_dup(char **array, int width)
 {
@@ -46,4 +48,11 @@ int is_map_empty(char **map, int width)
             return (0);
     }
     return (1);
+}
+
+void draw(game_t *game, conf_t *conf)
+{
+    clear();
+    display(game, conf);
+    refresh();
 }

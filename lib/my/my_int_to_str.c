@@ -26,17 +26,17 @@ int get_digit_count(int n)
 
 char *my_int_to_str(int n)
 {
-    int l = get_digit_count(n);
+    int len = get_digit_count(n);
     int offset = n < 0 ? 1 : 0;
-    char *ret = malloc(l + offset + 1);
+    char *ret = malloc(len + offset + 1);
 
-    ret[l] = 0;
+    ret[len] = 0;
     if (n < 0){
         ret[0] = '-';
-        l--;
+        len--;
     }
-    while (l--){
-        ret[l + offset] = abs(n % 10) + '0';
+    while (len--){
+        ret[len + offset] = abs(n % 10) + '0';
         n /= 10;
     }
     return (ret);

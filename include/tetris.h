@@ -33,6 +33,9 @@
     "  -w --without-next     Hide next tetrimino (def: false)\n"        \
     "  -D --debug            Debug mode (def: false)\n"
 
+// clocks_per_seconds
+#define CPS (10000)
+
 typedef struct tetriminos_s {
     int error;
     int color;
@@ -66,6 +69,8 @@ typedef struct cur {
     char **blocks;
     tetrimino_t *piece;
 } current_t;
+
+#include <time.h>
 
 typedef struct game {
     int pause;
@@ -102,6 +107,8 @@ void print_tetriminos(tetrimino_t **tetris);
 void start_game(conf_t *conf);
 void display(game_t *game, conf_t *conf);
 
+void draw(game_t *game, conf_t *conf);
+
 void parse_nb(conf_t *conf);
 int parse_key(char org);
 
@@ -120,6 +127,7 @@ void free_array(char **array);
 
 int get_high_score(void);
 void save_high_score(int high_score);
+void lost(void);
 
 void check_lines(game_t *game, conf_t *conf);
 int get_mult(int counter);

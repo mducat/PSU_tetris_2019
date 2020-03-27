@@ -86,8 +86,6 @@ void post_conf(char type, pf_conf_t *conf, int size, int nb)
         padding -= conf->precision - size;
     else if (conf->width > 0 && conf->flags[3] && is_numtype(type))
         padding -= conf->width - size;
-    if (padding > 0){
-        for (int i = 0; i < padding; i++)
-            pf_putchar(print, conf);
-    }
+    for (int i = 0; i < padding; i++)
+        pf_putchar(print, conf);
 }

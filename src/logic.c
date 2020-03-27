@@ -34,8 +34,10 @@ int step(game_t *game, conf_t *conf)
     if (is_colliding(game, game->current, conf)){
         game->current->cur_y -= 1;
         merge_map(game, game->current);
-        if (init_piece(game, conf))
+        if (init_piece(game, conf)){
+            lost();
             return (1);
+        }
     }
     check_lines(game, conf);
     return (0);

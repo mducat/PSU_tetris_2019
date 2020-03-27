@@ -54,12 +54,6 @@ game_t *init_game(conf_t *conf)
 
 void free_game(game_t *game)
 {
-    attron(A_BOLD);
-    mvprintw(15, 50, "You lost !");
-    refresh();
-    usleep(1000000);
-    timeout(10000);
-    getch();
     save_high_score(game->high_score);
     for (int i = 0; game->map[i] != 0; i++)
         free(game->map[i]);
@@ -73,16 +67,20 @@ int input(game_t *game, conf_t *conf)
 
     game->timeout = clock();
     timeout(0);
-    while (clock() - game->timeout < 1000000
+    while (clock() - game->timeout < CLOCKS_PER_SEC
         * get_speed(game->level) / 60){
-        if (is_colliding(game, game->current, conf)
-            || (mem = act(game, conf, getch())) == 1)
+        usleep(10000);
+        game->clock -= CLOCKS_PER_SEC / 100;
+        game->timeout -= CLOCKS_PER_SEC / 100;
+        if ((mem = act(game, conf, getch())) == 1)
             return (1);
         if (mem < 0)
             continue;
-        clear();
-        display(game, conf);
-        refresh();
+        if (is_colliding(game, game->current, conf)){
+            lost();
+            return (1);
+        }
+        draw(game, conf);
     }
     return (0);
 }
@@ -90,6 +88,7 @@ int input(game_t *game, conf_t *conf)
 void start_game(conf_t *conf)
 {
     game_t *game = init_game(conf);
+
     initscr();
     start_color();
     for (int i = 0; conf->tetriminos[i] != 0; i++)
@@ -99,9 +98,7 @@ void start_game(conf_t *conf)
     noecho();
     curs_set(0);
     while (1){
-        clear();
-        display(game, conf);
-        refresh();
+        draw(game, conf);
         if (input(game, conf))
             break;
         if (step(game, conf))

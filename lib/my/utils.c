@@ -40,7 +40,7 @@ int get_nbr_length(long long int nbr, char *base, int is_signed)
 
 long long int get_unsigned(va_list *ap, pf_conf_t *conf)
 {
-    switch(conf->size){
+    switch (conf->size){
     case -1:
         return ((unsigned int) va_arg(*ap, int));
     case 0:
@@ -63,7 +63,7 @@ long long int get_unsigned(va_list *ap, pf_conf_t *conf)
 
 long long int get_signed(va_list *ap, pf_conf_t *conf)
 {
-    switch(conf->size){
+    switch (conf->size){
     case -1:
         return (va_arg(*ap, int));
     case 0:

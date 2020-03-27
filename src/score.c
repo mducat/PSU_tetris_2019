@@ -9,8 +9,19 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <ncurses.h>
 
 #include "my.h"
+
+void lost(void)
+{
+    attron(A_BOLD);
+    mvprintw(15, 50, "You lost !");
+    refresh();
+    usleep(1000000);
+    timeout(10000);
+    getch();
+}
 
 int get_high_score(void)
 {
