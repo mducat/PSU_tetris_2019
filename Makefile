@@ -18,7 +18,12 @@ SRC	=	src/main.c		\
 		src/logic.c		\
 		src/blocks.c		\
 		src/map.c		\
-		src/parse.c
+		src/parse.c		\
+		src/lines.c		\
+		src/rotation.c		\
+		src/piece.c		\
+		src/speed.c		\
+		src/score.c
 
 OBJ	=	$(SRC:.c=.o)
 

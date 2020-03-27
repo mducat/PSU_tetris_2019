@@ -61,6 +61,8 @@ typedef struct conf {
 typedef struct cur {
     int cur_x;
     int cur_y;
+    int height;
+    int width;
     char **blocks;
     tetrimino_t *piece;
 } current_t;
@@ -104,7 +106,8 @@ void parse_nb(conf_t *conf);
 int parse_key(char org);
 
 int act(game_t *game, conf_t *conf, int c);
-void step(game_t *game, conf_t *conf);
+int step(game_t *game, conf_t *conf);
+void rotate_blocks(current_t *current, game_t *game, conf_t *conf);
 
 int is_colliding(game_t *game, current_t *current, conf_t *conf);
 void merge_map(game_t *game, current_t *current);
@@ -112,8 +115,18 @@ void merge_map(game_t *game, current_t *current);
 int init_piece(game_t *game, conf_t *conf);
 tetrimino_t *pick_piece(conf_t *conf);
 
-char **array_dup(char **array);
+char **array_dup(char **array, int width);
 void free_array(char **array);
+
+int get_high_score(void);
+void save_high_score(int high_score);
+
+void check_lines(game_t *game, conf_t *conf);
+int get_mult(int counter);
+
+int get_speed(int level);
+
+int is_map_empty(char **map, int width);
 
 // Tetriminos handling
 void set_tetri_int_values(tetrimino_t *tetri, char *content);

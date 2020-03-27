@@ -10,52 +10,35 @@
 
 #include "tetris.h"
 
-int init_piece(game_t *game, conf_t *conf)
+int pause(conf_t *conf, game_t *game)
 {
-    int size = 0;
-    char **dup;
+    int ret = 0;
+    int c;
 
-    if (!game->current)
-        game->current = malloc(sizeof(current_t));
-    else
-        free_array(game->current->blocks);
-    if (!game->current)
-        exit(84);
-    for (; conf->tetriminos[size] != 0; size++);
-    game->current->piece = game->next;
-    game->current->cur_y = 0;
-    game->current->cur_x = (conf->width - game->next->width) / 2;
-    game->current->blocks = array_dup(game->next->blocks);
-    game->next = pick_piece(conf);
-    if (is_colliding(game, game->current, conf))
-        return (1);
-    return (0);
+    timeout(-1);
+    while (c = getch()){
+        if (c == conf->key_pause || c == conf->key_quit){
+            ret = (c == conf->key_quit ? 1 : 0);
+            break;
+        }
+    }
+    timeout(0);
+    return (ret);
 }
 
-tetrimino_t *pick_piece(conf_t *conf)
-{
-    int size = 0;
-    tetrimino_t *piece;
-
-    for (; conf->tetriminos[size] != 0; size++);
-    if (!size)
-        return (0);
-    piece = conf->tetriminos[rand() % size];
-    while (piece->error)
-        piece = conf->tetriminos[rand() % size];
-    return (piece);
-}
-
-void step(game_t *game, conf_t *conf)
+int step(game_t *game, conf_t *conf)
 {
     if (game->pause)
-        return;
+        return (0);
     game->current->cur_y += 1;
     if (is_colliding(game, game->current, conf)){
         game->current->cur_y -= 1;
         merge_map(game, game->current);
-        init_piece(game, conf);
+        if (init_piece(game, conf))
+            return (1);
     }
+    check_lines(game, conf);
+    return (0);
 }
 
 int act(game_t *game, conf_t *conf, int c)
@@ -73,11 +56,11 @@ int act(game_t *game, conf_t *conf, int c)
     if (c == conf->key_quit)
         return (1);
     if (c == conf->key_turn)
-        mvprintw(0, 0, "Turn !");
+        rotate_blocks(game->current, game, conf);
     if (c == conf->key_pause)
-        game->pause ^= 1;
+        return (pause(conf, game));
     if (game->current->cur_x < 0 || game->current->cur_x > conf->width - 1 -
-        game->current->piece->width || is_colliding(game, game->current, conf))
+        game->current->width || is_colliding(game, game->current, conf))
         game->current->cur_x = old_x;
     return (0);
 }
