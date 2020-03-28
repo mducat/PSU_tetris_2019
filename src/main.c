@@ -47,6 +47,15 @@ void check_tetriminos(conf_t *conf)
     exit(84);
 }
 
+void check_conf(conf_t *conf)
+{
+    int *to_check = &(conf->key_left);
+
+    for (int i = 0; i < 6; i++)
+        for (int j = 0; j < 6; j++)
+            *(to_check + i) == *(to_check + j) && i != j ? exit(84) : 0;
+}
+
 int main(int ac, char **av)
 {
     conf_t *conf = parse_arguments(ac, av);
@@ -61,6 +70,7 @@ int main(int ac, char **av)
     if (get_tetriminos(&(conf->tetriminos)))
         return (84);
     check_tetriminos(conf);
+    check_conf(conf);
     if (conf->debug)
         print_conf(conf);
     start_game(conf);

@@ -74,8 +74,9 @@ void draw_data(int x, int y, game_t *game, conf_t *conf)
 
 void display(game_t *game, conf_t *conf)
 {
-    int x = 10;
-    int y = 10;
+    int x = (getmaxx(stdscr) - (51 + 2 * conf->width))
+        / 2;
+    int y = (getmaxy(stdscr) - conf->height) / 2;
     int data_w = 30;
     int margin = 4;
 
@@ -85,9 +86,10 @@ void display(game_t *game, conf_t *conf)
     draw_border(x + data_w + margin, y, conf->width * 2 - 2, conf->height);
     draw_map(x + data_w + margin, y, game->map, conf);
     if (!conf->without_next){
-        draw_border(x + data_w + margin + conf->width * 2 + 10, y, 8, 8);
+        draw_border(x + data_w + margin + conf->width * 2 + 5, y,
+            game->next->width + 1, game->next->height + 1);
         for (int i = 0; game->next->blocks[i] != 0; i++)
-            mvprintw(1 + y + i, x + conf->width * 2 + 11 + data_w + margin,
+            mvprintw(1 + y + i, x + conf->width * 2 + 6 + data_w + margin,
                 game->next->blocks[i]);
     }
 }

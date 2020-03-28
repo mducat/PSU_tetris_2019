@@ -15,8 +15,11 @@
 
 void lost(void)
 {
+    int x = getmaxx(stdscr);
+    int y = getmaxy(stdscr);
+
     attron(A_BOLD);
-    mvprintw(15, 50, "You lost !");
+    mvprintw(y / 2, (x - 10) / 2, "You lost !");
     refresh();
     usleep(1000000);
     timeout(10000);

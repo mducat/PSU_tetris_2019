@@ -33,7 +33,6 @@
     " -w --without-next\tHide next tetrimino (def: false)\n"        \
     " -D --debug\t\tDebug mode (def: false)\n"
 
-// clocks_per_seconds
 #define CPS (10000)
 
 typedef struct tetriminos_s {
@@ -69,8 +68,6 @@ typedef struct cur {
     char **blocks;
     tetrimino_t *piece;
 } current_t;
-
-#include <time.h>
 
 typedef struct game {
     int pause;

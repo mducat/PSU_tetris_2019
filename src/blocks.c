@@ -52,7 +52,15 @@ int is_map_empty(char **map, int width)
 
 void draw(game_t *game, conf_t *conf)
 {
+    int x;
+    int y;
+
     clear();
-    display(game, conf);
+    getmaxyx(stdscr, y, x);
+    if (x < 51 + 2 * conf->width + game->current->width
+        || y < 2 + max(conf->height, game->current->height))
+        mvprintw(y / 2 - 1, (x - 29) / 2, "Please enlarge the terminal !");
+    else
+        display(game, conf);
     refresh();
 }
