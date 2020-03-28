@@ -21,11 +21,12 @@ int count_int(char *string)
     int count = 0;
 
     for (int i = 0; string[i]; i++) {
-        if (i > 0 && string[i] == ' '
-            && (string[i - 1] >= '0' && string[i - 1] <= '9'))
+        if (!is_num(string[i]) && string[i] != ' ' && string[i] != '\n')
+            return (0);
+        if (i > 0 && string[i] == ' ' && is_num(string[i - 1]))
             count++;
         else if ((string[i + 1] == '\n' || !string[i + 1])
-            && string[i] >= '0' && string[i] <= '9')
+            && is_num(string[i]))
             count++;
     }
     return (count);

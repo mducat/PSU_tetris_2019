@@ -109,6 +109,9 @@ void draw(game_t *game, conf_t *conf);
 void parse_nb(conf_t *conf);
 int parse_key(char org);
 
+void chk_conf_game(conf_t *conf);
+void check_tet_content(tetrimino_t *piece);
+
 int act(game_t *game, conf_t *conf, int c);
 int step(game_t *game, conf_t *conf);
 void rotate_blocks(current_t *current, game_t *game, conf_t *conf);

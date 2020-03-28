@@ -23,7 +23,8 @@ SRC	=	src/main.c		\
 		src/rotation.c		\
 		src/piece.c		\
 		src/speed.c		\
-		src/score.c
+		src/score.c		\
+		src/tet_error.c
 
 OBJ	=	$(SRC:.c=.o)
 

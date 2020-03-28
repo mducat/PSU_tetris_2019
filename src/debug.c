@@ -59,7 +59,7 @@ void print_conf(conf_t *conf)
     my_printf("Key Pause :  %s\n", key_to_str(conf->key_pause));
     my_printf("Next :  %s\n", conf->without_next ? "No" : "Yes");
     my_printf("Level :  %d\n", conf->level_start);
-    my_printf("Size :  %d*%d\n", conf->height, conf->width);
+    my_printf("Size :  %d*%d\n", conf->height - 1, conf->width - 1);
     print_tetriminos(conf->tetriminos);
     my_printf("Press any key to start Tetris\n");
     wait_key();

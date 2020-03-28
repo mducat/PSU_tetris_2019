@@ -39,12 +39,9 @@ void check_tetriminos(conf_t *conf)
     for (int i = 0; conf->tetriminos[i] != 0; i++){
         if (conf->tetriminos[i]->width >= conf->width
             || conf->tetriminos[i]->height >= conf->height)
-            conf->tetriminos[i]->error =1;
+            conf->tetriminos[i]->error = 1;
+        check_tet_content(conf->tetriminos[i]);
     }
-    for (int i = 0; conf->tetriminos[i] != 0; i++)
-        if (!conf->tetriminos[i]->error)
-            return;
-    exit(84);
 }
 
 void check_conf(conf_t *conf)

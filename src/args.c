@@ -75,7 +75,8 @@ conf_t *parse_arguments(int ac, char **av)
 
     if (!conf)
         return (0);
-    while ((c = getopt_long(ac, av, "L:l:r:t:d:q:p:wD", tetris_long, 0)) != -1){
+    while ((c = getopt_long(ac, av, "+L:l:r:t:d:q:p:wD",
+        tetris_long, 0)) != -1){
         if (c == '?'){
             free(conf);
             return (0);
