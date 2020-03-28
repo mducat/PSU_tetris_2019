@@ -21,8 +21,8 @@ void check_tet_content(tetrimino_t *piece)
 {
     if (piece->error)
         return;
-    for (int i = 0; i < piece->height != 0; i++)
-        for (int j = 0; j < piece->width; j++)
+    for (int i = 0; piece->blocks[i] != 0; i++)
+        for (int j = 0; piece->blocks[i][j] != 0; j++)
             check_char(piece, i, j);
 }
 
