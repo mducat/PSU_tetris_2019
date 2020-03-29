@@ -52,7 +52,10 @@ void handle_par(conf_t *conf, char c)
     switch (c){
     case 'D': conf->debug = 1;
         break;
-    case 'L': conf->level_start = my_getnbr(optarg);
+    case 'L':
+        if (!my_str_isnum(optarg))
+            exit(84);
+        conf->level_start = my_getnbr(optarg);
         break;
     case 'l': conf->key_left = parse_key(conf->key_left);
         break;
