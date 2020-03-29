@@ -23,6 +23,8 @@ int parse_key(char org)
         return (KEY_DOWN);
     if (!my_strcmp(optarg, "space"))
         return (' ');
+    if (!optarg || !is_print(optarg[0]))
+        exit(84);
     if (my_strlen(optarg) == 1)
         return (optarg[0]);
     exit(84);
@@ -47,4 +49,3 @@ void parse_nb(conf_t *conf)
     conf->height = my_getnbr(optarg) + 1;
     conf->width = my_getnbr(optarg + separator + 1) + 1;
 }
-

@@ -44,20 +44,24 @@ void check_tetriminos(conf_t *conf)
     }
 }
 
-void check_conf(conf_t *conf)
+void check_conf(conf_t *conf, char **env)
 {
     int *to_check = &(conf->key_left);
 
     for (int i = 0; i < 6; i++)
         for (int j = 0; j < 6; j++)
             *(to_check + i) == *(to_check + j) && i != j ? exit(84) : 0;
+    for (int i = 0; env[i] != 0; i++)
+        if (!my_strncmp(env[i], "TERM=", 5))
+            return;
+    exit(84);
 }
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **env)
 {
     conf_t *conf = parse_arguments(ac, av);
 
-    if (!conf)
+    if (!conf || !env)
         return (84);
     if (conf->help){
         my_printf(USAGE, av[0]);
@@ -67,7 +71,7 @@ int main(int ac, char **av)
     if (get_tetriminos(&(conf->tetriminos)))
         return (84);
     check_tetriminos(conf);
-    check_conf(conf);
+    check_conf(conf, env);
     if (conf->debug)
         print_conf(conf);
     start_game(conf);
